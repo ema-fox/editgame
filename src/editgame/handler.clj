@@ -73,7 +73,11 @@
 
 (defn login [req]
   (let [name (get-in req [:form-params "name"])]
-    (set-cookie (redirect "/") "name" name)))
+    (if (= (count name) 0)
+      (html5
+        [:div "please enter a name"]
+        (link-to "/" "ok"))
+      (set-cookie (redirect "/") "name" name))))
 
 (defn show-players [players]
   (for [player (sort-by #(:gold (:inventar (second %))) > players)]
