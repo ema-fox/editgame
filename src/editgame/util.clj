@@ -1,5 +1,5 @@
 (ns editgame.util
-  (:import [java.time Instant]))
+  (:import [java.util Date]))
 
 (def tau (* 2 Math/PI))
 
@@ -105,4 +105,4 @@
      res#))
 
 (defn now []
-  (. (Instant/now) (getEpochSecond)))
+  (int (/ (. (Date.) (getTime)) 1000)))
