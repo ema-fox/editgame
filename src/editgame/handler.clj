@@ -107,18 +107,19 @@
             "tree")))])
    (when (= offset [0 0])
      (if (:owner place)
-       (list
-        (form-to [:post (formcb [title]
-                          (dosync
-                           (alter state assoc-in [:map pos :title] title))
-                          (redirect "/show"))]
-          (text-field "title")
-          (submit-button "set-title"))
-        (if (and (>= (:gold (:inventar player)) 5) (not (:tree place)))
-          (action "place tree"
-            (dosync
-             (alter state #(-> (update-inventar % name {:gold -5})
-                               (assoc-in [:map pos :tree] (now))))))))
+       (if (= (:owner place) name)
+         (list
+          (form-to [:post (formcb [title]
+                            (dosync
+                             (alter state assoc-in [:map pos :title] title))
+                            (redirect "/show"))]
+            (text-field "title")
+            (submit-button "set-title"))
+          (if (and (>= (:gold (:inventar player)) 5) (not (:tree place)))
+            (action "place tree"
+              (dosync
+               (alter state #(-> (update-inventar % name {:gold -5})
+                                 (assoc-in [:map pos :tree] (now)))))))))
        (when (>= (:gold (:inventar player)) 10)
          (action "buy"
            (dosync
